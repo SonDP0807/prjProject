@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.net.URLEncoder;
 
 /**
@@ -84,6 +85,8 @@ public class LoginServlet extends HttpServlet {
 
             AccountDAO aO = new AccountDAO();
             if ("waiter".equals(aO.getAccount(username, password))) {
+                HttpSession session = request.getSession();
+                session.setAttribute("username", username);
                 response.sendRedirect("tableID.jsp");
             } else if ("cashier".equals(aO.getAccount(username, password))) {
                 response.sendRedirect("cashier");
@@ -104,6 +107,8 @@ public class LoginServlet extends HttpServlet {
 
             AccountDAO aO = new AccountDAO();
             if ("admin".equals(aO.getAccount(username, password))) {
+                HttpSession session = request.getSession();
+                session.setAttribute("username", username);
                 response.sendRedirect("admin.jsp");
             } else {
                 String errorMessage = "Username or password are incorrect";
@@ -124,4 +129,3 @@ public class LoginServlet extends HttpServlet {
     }// </editor-fold>
 
 }
-

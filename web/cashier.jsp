@@ -17,7 +17,7 @@
     <body>
       
         <div class="container mt-5">
-              <a class="btn btn-danger btn-logout" href="index.html">Log Out</a> <!-- Thay đổi đây -->
+              <a class="btn btn-danger btn-logout" href="logout">Log Out</a> <!-- Thay đổi đây -->
             <div class="number-grid mt-4">
             <div class="number-grid">
                 <div class="row justify-content-start">

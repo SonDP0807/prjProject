@@ -54,7 +54,7 @@
                                style="font-size: 25px; font-weight: 500;">Order</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="index.html" 
+                            <a class="nav-link" href="logout" 
                                style="font-size: 25px; font-weight: 500;">Log Out</a>
                         </li>
                     </ul>

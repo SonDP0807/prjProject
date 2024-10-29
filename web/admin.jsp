@@ -19,7 +19,7 @@
         <h1>Welcome to the Admin Page</h1>
         
         <!-- Log Out Link -->
-        <a class="nav-link" href="index.html">Log Out</a>
+        <a class="nav-link" href="logout">Log Out</a>
         
        
         
