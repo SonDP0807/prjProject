@@ -119,5 +119,19 @@ public class TableDAO extends DBContext {
             System.out.println(e);
         }
     }
-
+    public boolean checkIfTableOccupied(int tableID) {
+    String sql = "SELECT TableStatus FROM [Table] WHERE TableID = ?";
+    try {
+        PreparedStatement st = connection.prepareStatement(sql);
+        st.setInt(1, tableID);
+        ResultSet rs = st.executeQuery();
+        if (rs.next()) {
+            String status = rs.getString("TableStatus");
+            return "occupied".equals(status); // Trả về true nếu bàn bị chiếm, false nếu không
+        }
+    } catch (SQLException e) {
+        System.out.println("Error checking table status: " + e.getMessage());
+    }
+    return false; // Trả về false nếu không tìm thấy bàn
+}
 }

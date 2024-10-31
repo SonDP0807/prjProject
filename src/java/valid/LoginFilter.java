@@ -118,7 +118,8 @@ public class LoginFilter implements Filter {
         } else {
             // Kiểm tra nếu yêu cầu đến các trang cần bảo vệ
             if (requestURI.endsWith("admin.jsp") || requestURI.endsWith("menu.jsp")
-                    || requestURI.endsWith("order.jsp") || requestURI.endsWith("listStaff.jsp")) {
+                    || requestURI.endsWith("order.jsp") || requestURI.endsWith("listStaff.jsp")
+                    ||requestURI.endsWith("cashier.jsp")) {
                 // Nếu chưa đăng nhập và đang cố gắng truy cập các trang bảo vệ
                 res.sendRedirect(loginURI); // Chuyển hướng đến trang đăng nhập
             } else {

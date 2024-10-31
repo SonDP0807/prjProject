@@ -7,6 +7,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
+<%@ page import="model.Table" %>
+<%@ page import="dal.TableDAO" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -75,7 +77,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <div class="container-fluid bg-image">
+           <div class="container-fluid bg-image">
             <div class="overlay">
                 <div class="content">
                     <form action="dish" method="get" class="form-custom">
@@ -91,13 +93,22 @@
                 </div>
             </div>
         </div>
+     
         <%@include file="footer.jsp" %>
         <% 
             // Kiểm tra nếu tableID đã được truyền vào
-            String tableID = request.getParameter("tableID");
-            if (tableID != null) {
+           String tableID = request.getParameter("tableID");
+        if (tableID != null) {
+            TableDAO tableDAO = new TableDAO();
+            if (tableDAO.checkIfTableOccupied(Integer.parseInt(tableID))) {
+                // Xóa session tableID nếu bàn đã bị chiếm
+                session.removeAttribute("tableID");
+                out.println("<p style='color: red;'>Table " + tableID + " is occupied. Please choose another table.</p>");
+            } else {
                 session.setAttribute("tableID", tableID);
             }
+        }
         %>
+        
     </body>
 </html>

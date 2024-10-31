@@ -81,11 +81,6 @@ public class DishServlet extends HttpServlet {
                 request.getRequestDispatcher("tableID.jsp").forward(request, response);
             }
         } catch (NumberFormatException e) {
-
-//            DishDAO dAO = new DishDAO();
-//            List<Dish> list = dAO.getAll();
-//            request.setAttribute("data", list);
-//            request.getRequestDispatcher("menu.jsp").forward(request, response);
             String error = "Invalid Talbe ID";
             request.setAttribute("error", error);
             request.getRequestDispatcher("tableID.jsp").forward(request, response);
