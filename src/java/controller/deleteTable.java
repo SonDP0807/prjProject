@@ -66,17 +66,22 @@ public class deleteTable extends HttpServlet {
             Table table = dao.findTableById(id); // Tìm bàn theo id trước khi xóa
 
             if (table != null) { // Nếu tìm thấy bàn với id hợp lệ
+                if(table.getStatus().equals("occupied")){
+                request.setAttribute("error", "Table is occupied ");
+                request.getRequestDispatcher("getTable").forward(request, response); // Trả về danh sách bàn với thông báo lỗi    
+                return;
+                }
                 dao.deleteTable(id); // Xóa bàn theo ID
                 response.sendRedirect("getTable"); // Redirect về trang danh sách sau khi xóa thành công
             } else {
                 // Nếu không tìm thấy bàn với ID cung cấp
                 request.setAttribute("error", "Table with ID " + id + " not found.");
-                request.getRequestDispatcher("listTable.jsp").forward(request, response); // Trả về danh sách bàn với thông báo lỗi
+                request.getRequestDispatcher("getTable").forward(request, response); // Trả về danh sách bàn với thông báo lỗi
             }
         } catch (NumberFormatException e) {
             // Nếu ID nhập không phải là số nguyên
             request.setAttribute("error", "Invalid ID format. Please enter a numeric value.");
-            request.getRequestDispatcher("listTable.jsp").forward(request, response); // Trả về trang danh sách bàn với thông báo lỗi
+            request.getRequestDispatcher("getTable").forward(request, response); // Trả về trang danh sách bàn với thông báo lỗi
         } catch (Exception e) {
             // Bắt lỗi không mong đợi khác
             System.out.println("Error while deleting table: " + e.getMessage());

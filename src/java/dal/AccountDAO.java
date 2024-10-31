@@ -32,9 +32,8 @@ public class AccountDAO extends DBContext {
             System.out.println(e);
         }
         return null;
-    } 
-    
-    
+    }
+
     public List<Account> getAll() {
         List<Account> list = new ArrayList<>();
         String sql = "SELECT * FROM Account";
@@ -65,6 +64,31 @@ public class AccountDAO extends DBContext {
             System.out.println(e);
         }
         return null;
+    }
+
+    public Account findAccountByStaffId(int staffId) {
+        Account account = null;
+        String sql = "SELECT a.AccountID, a.username, a.password, a.role "
+                + "FROM Account a "
+                + "JOIN Staff s ON a.AccountID = s.AccountID "
+                + "WHERE s.staffId = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, staffId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    account = new Account();
+                    account.setAccountID(rs.getInt("AccountID"));
+                    account.setUsername(rs.getString("username"));
+                    account.setPassword(rs.getString("password"));
+                    account.setRole(rs.getString("role"));
+                    // Thiết lập các thuộc tính khác nếu cần
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error in findAccountByStaffId: " + e.getMessage());
+        }
+        return account;
     }
 
     // Thêm tài khoản mới
@@ -107,5 +131,5 @@ public class AccountDAO extends DBContext {
             System.out.println(e);
         }
     }
-    
+
 }

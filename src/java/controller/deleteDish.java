@@ -71,15 +71,15 @@ public class deleteDish extends HttpServlet {
                 response.sendRedirect("getDish"); // Redirect về trang danh sách sau khi xóa thành công
             } else {
                 request.setAttribute("error", "Dish with ID " + id + " not found.");
-                request.getRequestDispatcher("listDish.jsp").forward(request, response); // Trả về danh sách với thông báo lỗi
+                request.getRequestDispatcher("getDish").forward(request, response); // Trả về danh sách với thông báo lỗi
             }
         } catch (NumberFormatException e) {
             request.setAttribute("error", "Invalid ID format. Please enter a numeric value.");
-            request.getRequestDispatcher("listDish.jsp").forward(request, response); // Đổi về trang danh sách có thông báo lỗi
+            request.getRequestDispatcher("getDish").forward(request, response); // Đổi về trang danh sách có thông báo lỗi
         } catch (Exception e) {
             System.out.println("Error while deleting dish: " + e.getMessage());
             request.setAttribute("error", "An unexpected error occurred while deleting the dish. Please try again.");
-            request.getRequestDispatcher("listDish.jsp").forward(request, response); // Đổi về trang danh sách có thông báo lỗi
+            request.getRequestDispatcher("getDish").forward(request, response); // Đổi về trang danh sách có thông báo lỗi
         }
 
     }
