@@ -99,24 +99,70 @@ public class LoginFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse res = (HttpServletResponse) response;
-        HttpSession session = req.getSession(false);
 
-        boolean loggedIn = (session != null && session.getAttribute("account") != null);
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse res = (HttpServletResponse) response;
+
+        // Lấy session hiện tại, nếu có
+        HttpSession session = req.getSession(false);
+        String uri = req.getServletPath();
+        if (uri.endsWith(".jsp")
+                && !uri.endsWith("admin.jsp")
+                && !uri.endsWith("menu.jsp")
+                && !uri.endsWith("order.jsp")
+                && !uri.endsWith("listStaff.jsp")
+                && !uri.endsWith("cashier")
+                && !uri.endsWith("cashier.jsp")
+                && !uri.endsWith("addAccountandStaff.jsp")
+                && !uri.endsWith("createDish.jsp")
+                && !uri.endsWith("createTable.jsp")
+                && !uri.endsWith("cashierManage.jsp")
+                && !uri.endsWith("updateDish.jsp")
+                && !uri.endsWith("updateTable.jsp")
+                && !uri.endsWith("updateAccountandStaff.jsp")
+                && !uri.endsWith("tableID.jsp")
+                && !uri.endsWith("header.jsp")
+                && !uri.endsWith("footer.jsp")
+                && !uri.endsWith("bill.jsp")
+                && !uri.endsWith("continue.jsp")
+                && !uri.endsWith("listDish.jsp")
+                && !uri.endsWith("listTable.jsp")) {
+             // Code xử lý khi đường dẫn không hợp lệ
+                res.sendRedirect("index.html");
+        }
+        
+        
+        boolean isLoggedIn = (session != null && session.getAttribute("username") != null);
         String requestURI = req.getRequestURI();
 
-// Allow access to home.jsp and forgotpass.jsp without login
-        if (!loggedIn && !requestURI.endsWith("index.html")
-                && !requestURI.endsWith("admin.jsp")
-                && !requestURI.endsWith("cashier.jsp")
-                && !requestURI.endsWith("menu.jsp")
-                && !requestURI.endsWith("getTable")
-                && !requestURI.endsWith("menu.jsp")) {
-            res.sendRedirect("index.html");
-            return;
+        // Đường dẫn đến trang đăng nhập
+        String loginURI = req.getContextPath() + "/index.html"; // URL của trang đăng nhập
+
+        // Kiểm tra yêu cầu đến các trang bảo vệ
+        if (isLoggedIn || requestURI.equals(loginURI)) {
+            // Nếu đã đăng nhập hoặc đang truy cập trang đăng nhập, cho phép tiếp tục request
+            chain.doFilter(request, response);
+        } else {
+            // Kiểm tra nếu yêu cầu đến các trang cần bảo vệ
+            if (requestURI.endsWith("admin.jsp") || requestURI.endsWith("menu.jsp")
+                    || requestURI.endsWith("order.jsp") || requestURI.endsWith("listStaff.jsp")
+                    || requestURI.endsWith("cashier.jsp")
+                    || requestURI.endsWith("addAccountandStaff.jsp") || requestURI.endsWith("createDish.jsp")
+                    || requestURI.endsWith("createTable.jsp") || requestURI.endsWith("cashierManage.jsp")
+                    || requestURI.endsWith("updateDish.jsp") || requestURI.endsWith("updateTable.jsp")
+                    || requestURI.endsWith("updateAccountandStaff.jsp") || requestURI.endsWith("tableID.jsp")
+                    || requestURI.endsWith("header.jsp") || requestURI.endsWith("footer.jsp")
+                    || requestURI.endsWith("bill.jsp") || requestURI.endsWith("continue.jsp")
+                    || requestURI.endsWith("listDish.jsp") || requestURI.endsWith("listStaff.jsp")
+                    || requestURI.endsWith("listTable.jsp")) {
+                // Nếu chưa đăng nhập và đang cố gắng truy cập các trang bảo vệ
+                res.sendRedirect(loginURI); // Chuyển hướng đến trang đăng nhập
+            } else {
+                // Nếu không phải là trang bảo vệ, cho phép tiếp tục request
+                chain.doFilter(request, response);
+            }
         }
-      
+
     }
 
     /**
