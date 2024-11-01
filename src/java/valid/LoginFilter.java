@@ -99,34 +99,24 @@ public class LoginFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-
-        HttpServletRequest req = (HttpServletRequest) request;
+HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-
-        // Lấy session hiện tại, nếu có
         HttpSession session = req.getSession(false);
-        boolean isLoggedIn = (session != null && session.getAttribute("username") != null);
+
+        boolean loggedIn = (session != null && session.getAttribute("account") != null);
         String requestURI = req.getRequestURI();
 
-        // Đường dẫn đến trang đăng nhập
-        String loginURI = req.getContextPath() + "/index.html"; // URL của trang đăng nhập
-
-        // Kiểm tra yêu cầu đến các trang bảo vệ
-        if (isLoggedIn || requestURI.equals(loginURI)) {
-            // Nếu đã đăng nhập hoặc đang truy cập trang đăng nhập, cho phép tiếp tục request
-            chain.doFilter(request, response);
-        } else {
-            // Kiểm tra nếu yêu cầu đến các trang cần bảo vệ
-            if (requestURI.endsWith("admin.jsp") || requestURI.endsWith("menu.jsp")
-                    || requestURI.endsWith("order.jsp") || requestURI.endsWith("listStaff.jsp")
-                    ||requestURI.endsWith("cashier.jsp")) {
-                // Nếu chưa đăng nhập và đang cố gắng truy cập các trang bảo vệ
-                res.sendRedirect(loginURI); // Chuyển hướng đến trang đăng nhập
-            } else {
-                // Nếu không phải là trang bảo vệ, cho phép tiếp tục request
-                chain.doFilter(request, response);
-            }
+// Allow access to home.jsp and forgotpass.jsp without login
+        if (!loggedIn && !requestURI.endsWith("index.html")
+                && !requestURI.endsWith("admin.jsp")
+                && !requestURI.endsWith("cashier.jsp")
+                && !requestURI.endsWith("menu.jsp")
+                && !requestURI.endsWith("getTable")
+                && !requestURI.endsWith("menu.jsp")) {
+            res.sendRedirect("index.html");
+            return;
         }
+      
     }
 
     /**

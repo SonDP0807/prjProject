@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.Dish;
 
@@ -63,6 +64,8 @@ public class DishServlet extends HttpServlet {
             throws ServletException, IOException {
         String tableID_raw = request.getParameter("tableID");
         int tableId;
+        HttpSession session = request.getSession();
+        session.setAttribute("tableID", tableID_raw);
         try {
             /**
              * neu truy cap bang cach nhap tableID thi se kiem tra xem ban do co

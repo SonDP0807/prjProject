@@ -95,20 +95,6 @@
         </div>
      
         <%@include file="footer.jsp" %>
-        <% 
-            // Kiểm tra nếu tableID đã được truyền vào
-           String tableID = request.getParameter("tableID");
-        if (tableID != null) {
-            TableDAO tableDAO = new TableDAO();
-            if (tableDAO.checkIfTableOccupied(Integer.parseInt(tableID))) {
-                // Xóa session tableID nếu bàn đã bị chiếm
-                session.removeAttribute("tableID");
-                out.println("<p style='color: red;'>Table " + tableID + " is occupied. Please choose another table.</p>");
-            } else {
-                session.setAttribute("tableID", tableID);
-            }
-        }
-        %>
-        
+    
     </body>
 </html>
